@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — JARVIS AI Agency</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: #07060A; color: #E8E0D0; overflow-x: hidden; }
+::-webkit-scrollbar { width: 6px; background: #07060A; }
+::-webkit-scrollbar-thumb { background: #C9A96E55; border-radius: 3px; }
+
+#three-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+.container { max-width: 1000px; margin: auto; padding: 0 30px; position: relative; z-index: 1; }
+
+header { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #C9A96E22; backdrop-filter: blur(24px); background: #07060ACC; position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo svg { width: 28px; height: 28px; }
+.logo-text { font-size: 18px; font-weight: 800; color: #F5F0E8; font-family: 'Playfair Display', serif; }
+.logo-text span { color: #C9A96E; }
+nav a { color: #988E80; text-decoration: none; margin-left: 25px; font-size: 14px; font-weight: 500; transition: color 0.3s; }
+nav a:hover { color: #C9A96E; }
+nav .btn-nav { padding: 8px 18px; background: linear-gradient(135deg, #C9A96E, #D4AF37); color: #07060A; border-radius: 6px; font-weight: 600; border: none; }
+
+.page-header { padding: 120px 0 50px; text-align: center; }
+.page-header h1 { font-size: 42px; font-weight: 800; margin-bottom: 12px; font-family: 'Playfair Display', serif; }
+.page-header h1 span { background: linear-gradient(135deg, #C9A96E, #F5E6D3, #D4AF37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.page-header p { color: #988E80; font-size: 16px; max-width: 550px; margin: 0 auto 35px; line-height: 1.6; }
+.gold-line { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, #C9A96E, transparent); margin: 0 auto; }
+
+.service-card { background: linear-gradient(145deg, #0D0A15, #120E1A); border: 1px solid #C9A96E18; border-radius: 16px; padding: 28px 25px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; gap: 20px; transition: all 0.4s; transform-style: preserve-3d; perspective: 1000px; position: relative; overflow: hidden; }
+.service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #C9A96E44, transparent); opacity: 0; transition: opacity 0.4s; }
+.service-card:hover { border-color: #C9A96E33; transform: translateX(6px); box-shadow: 0 12px 40px rgba(201,169,110,0.06); }
+.service-card:hover::before { opacity: 1; }
+.service-info { flex: 1; }
+.service-info h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; color: #F5F0E8; }
+.service-info p { font-size: 14px; color: #988E80; line-height: 1.6; }
+.service-price { font-size: 22px; font-weight: 800; color: #C9A96E; white-space: nowrap; }
+.service-price span { font-size: 13px; color: #665E50; font-weight: 400; }
+
+.cta { text-align: center; padding: 60px 0 80px; }
+.cta .btn { display: inline-flex; align-items: center; gap: 8px; padding: 16px 36px; background: linear-gradient(135deg, #C9A96E, #D4AF37); color: #07060A; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; transition: all 0.4s; position: relative; overflow: hidden; }
+.cta .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px #C9A96E44; }
+
+footer { padding: 30px; text-align: center; color: #554E40; font-size: 12px; border-top: 1px solid #C9A96E18; backdrop-filter: blur(10px); }
+footer a { color: #887E70; text-decoration: none; transition: color 0.3s; }
+footer a:hover { color: #C9A96E; }
+
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  .service-card { flex-direction: column; text-align: center; }
+  header { padding: 15px 20px; }
+  nav a { margin-left: 12px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+<div id="three-bg"></div>
+<header>
+<a href="/" class="logo">
+<svg viewBox="0 0 32 32" width="28" height="28"><circle cx="16" cy="16" r="14" fill="none" stroke="#C9A96E" stroke-width="1.5"/><circle cx="16" cy="16" r="6" fill="none" stroke="#D4AF37" stroke-width="1.5"/><circle cx="16" cy="16" r="2" fill="#C9A96E"/></svg>
+<div class="logo-text">JARVIS <span>AI</span></div>
+</a>
+<nav>
+<a href="/">Home</a>
+<a href="/services">Services</a>
+<a href="/portal" class="btn-nav">Client Portal</a>
+</nav>
+</header>
+<div class="container">
+<div class="page-header">
+<h1>Our <span>Services</span></h1>
+<p>Every service is powered by AI agents that work 24/7. You tell us what you need — we handle the rest.</p>
+<div class="gold-line"></div>
+</div>
+<div class="service-card reveal" data-tilt><div class="service-info"><h2>AI Content Writing</h2><p>Blog posts, social media, email newsletters, and marketing copy — written in your brand voice, delivered on schedule.</p></div><div class="service-price">$497<span>/mo</span></div></div>
+<div class="service-card reveal" data-tilt><div class="service-info"><h2>Workflow Automation</h2><p>Automate repetitive tasks, data entry, customer follow-ups, and internal processes. Save 20+ hours per week.</p></div><div class="service-price">$997<span>/mo</span></div></div>
+<div class="service-card reveal" data-tilt><div class="service-info"><h2>Market Research</h2><p>Competitor analysis, customer insights, and trend reports delivered weekly. No manual research required.</p></div><div class="service-price">$497<span>/mo</span></div></div>
+<div class="service-card reveal" data-tilt><div class="service-info"><h2>AI Chatbots</h2><p>Custom-trained chatbots for your website that handle customer inquiries, qualify leads, and book appointments 24/7.</p></div><div class="service-price">$1,497<span>/mo</span></div></div>
+<div class="service-card reveal" data-tilt><div class="service-info"><h2>Social Media Management</h2><p>Scheduled content, engagement monitoring, and growth strategy across all major platforms — managed by AI.</p></div><div class="service-price">$497<span>/mo</span></div></div>
+<div class="service-card reveal" data-tilt><div class="service-info"><h2>Data Analytics</h2><p>Automated reporting dashboards, data collection, and visualization. Know your numbers without the manual work.</p></div><div class="service-price">$997<span>/mo</span></div></div>
+</div>
+<div class="cta"><a href="mailto:agency@jarvisai.business" class="btn">Start Your Free Audit</a></div>
+<footer>&copy; 2026 JARVIS AI Agency. AI Automation For Business. <a href="/">Home</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></footer>
+<script>
+new (function(){
+  const c = document.getElementById('three-bg');
+  if (!c) return;
+  const s = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  const r = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  r.setSize(window.innerWidth, window.innerHeight); r.setPixelRatio(Math.min(devicePixelRatio, 2));
+  c.appendChild(r.domElement);
+  const g = new THREE.BufferGeometry();
+  const p = new Float32Array(1200 * 3);
+  for (let i = 0; i < 1200 * 3; i++) p[i] = (Math.random() - 0.5) * 40;
+  g.setAttribute('position', new THREE.BufferAttribute(p, 3));
+  const m = new THREE.PointsMaterial({ size: 0.025, color: 0xC9A96E, transparent: true, opacity: 0.3, sizeAttenuation: true, blending: THREE.AdditiveBlending });
+  const pt = new THREE.Points(g, m); s.add(pt);
+  cam.position.z = 12;
+  let mx = 0, my = 0;
+  document.addEventListener('mousemove', e => { mx = (e.clientX/window.innerWidth-0.5)*2; my = (e.clientY/window.innerHeight-0.5)*2; });
+  function anim() { requestAnimationFrame(anim); pt.rotation.y += 0.0002; pt.rotation.x += (my*0.008 - pt.rotation.x)*0.003; pt.rotation.y += (mx*0.008 - pt.rotation.y)*0.003; r.render(s, cam); }
+  anim();
+  window.addEventListener('resize', () => { cam.aspect = window.innerWidth/window.innerHeight; cam.updateProjectionMatrix(); r.setSize(window.innerWidth, window.innerHeight); });
+})();
+new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 }).observe(document.querySelector('.reveal')?.parentElement);
+document.querySelectorAll('.reveal').forEach(el => new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 }).observe(el));
+</script>
+</body>
+</html>

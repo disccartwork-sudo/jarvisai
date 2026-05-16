@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/services", "destination": "/services.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/portal", "destination": "/portal/index.html" }
+  ],
+  "cleanUrls": true
+}
